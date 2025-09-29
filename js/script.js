@@ -4,32 +4,6 @@ const loadCategories = () => {
     .then(res => res.json())
     .then(data => dispalyCatagorie(data.categories))
 }
-// froud catagory button dispaly 
-const loadFrod = (id) => {
-  const uri = `https://taxi-kitchen-api.vercel.app/api/v1/categories/${id}`;
-  // console.log(uri)
-  fetch(uri)
-    .then(res => res.json())
-    .then(data => dispalyFoods(data.foods))
-}
-
-// random data 
-const loadRandomData = () => {
-  const api = "https://taxi-kitchen-api.vercel.app/api/v1/foods/random";
-  fetch(api)
-    .then(res => res.json())
-    .then(data => dispalyFoods(data.foods))
-}
-
-// show modal data 
-const showModalLoad = (id) => {
-  const url = `https://taxi-kitchen-api.vercel.app/api/v1/foods/${id}`;
-  // console.log(url)
-  fetch(url)
-    .then(res => res.json())
-    .then(data => dispalyDitails(data.details))
-}
-
 
 const dispalyCatagorie = (categories) => {
   // console.log(categories)
@@ -48,9 +22,17 @@ const dispalyCatagorie = (categories) => {
     catContainer.append(catagorisCard)
   }
 }
+// froud catagory button dispaly 
+////////////////////////////////////////////////////////////////////
 
+const loadFrod = (id) => {
+  const uri = id ? `https://taxi-kitchen-api.vercel.app/api/v1/categories/${id}` : `https://taxi-kitchen-api.vercel.app/api/v1/foods/random`;
+  // console.log(uri)
+  fetch(uri)
+    .then(res => res.json())
+    .then(data => dispalyFoods(data.foods))
+}
 
-// dispaly fooods 
 const dispalyFoods = (foods) => {
   // console.log(foods)
   const foodsContainer = document.getElementById("food-container");
@@ -89,23 +71,55 @@ const dispalyFoods = (foods) => {
   })
 
 }
+/////////////////////////////////////////
+
+// show modal data 
+const showModalLoad = (id) => {
+  const url = `https://taxi-kitchen-api.vercel.app/api/v1/foods/${id}`;
+  // console.log(url)
+  fetch(url)
+    .then(res => res.json())
+    .then(data => dispalyDitails(data.details))
+}
 
 const dispalyDitails = (add) => {
   const ditaileContainer = document.getElementById("detail-Container")
-  ditaileContainer.innerHTML =`
-  
-   <div>
-      <img src= "${add.foodImg}" alt="">
+  ditaileContainer.innerHTML = "";
+  ditaileContainer.innerHTML = `
+    
+
+    <div class="p-3 mx-auto">
+        <h1 class="font-semibold text-center pb-2">${add.title}</h1>
+        <div class="im">
+            <img src="${add.foodImg}" alt="" class="">
+        </div>
+        <div class="flex justify-center items-center gap-4 pt-2">
+            <button class="btn btn-primary">${add.area}</button>
+            <a href="${add.video} target="_blank" class="btn btn-warning">Video</a>
+        </div>
     </div>
 
-    <div class="badge badge-primary font-semibold text-xl py-4 mt-3">
-     ${add.area}
-    </div>
-    <a href="${add.video}" target="_blank" class="font-semibold btn text-xl py-3 mt-3 bg-green-300 >Witch video</a>
-
-  `
+  `;
+  document.getElementById("my_modal_3").showModal()
 }
+
+//////////////////////////////////////////////
+// random data 
+const loadRandomData = () => {
+  const api = `https://taxi-kitchen-api.vercel.app/api/v1/foods/random`;
+  fetch(api)
+    .then(res => res.json())
+    .then(data => dispalyFoods(data.foods))
+}
+
+
+
+// dispaly fooods 
+
+
+
 loadCategories()
-loadRandomData()
+// loadRandomData()
+loadFrod(10)
 
 
