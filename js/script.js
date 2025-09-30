@@ -5,6 +5,9 @@ const loadCategories = () => {
     .then(data => dispalyCatagorie(data.categories))
 }
 
+const cartData = [];
+const total = 0;
+
 const dispalyCatagorie = (categories) => {
   // console.log(categories)
   const catContainer = document.getElementById("category-container")
@@ -26,15 +29,15 @@ const dispalyCatagorie = (categories) => {
 ////////////////////////////////////////////////////////////////////
 
 const loadFrod = (id) => {
- //food container k hide kora loading k show korbo 
- document.getElementById("food-container").classList.add("hidden")
- document.getElementById("loading-spinner").classList.remove("hidden")
+  //food container k hide kora loading k show korbo 
+  document.getElementById("food-container").classList.add("hidden")
+  document.getElementById("loading-spinner").classList.remove("hidden")
 
 
   const uri = id ? `https://taxi-kitchen-api.vercel.app/api/v1/categories/${id}` : `https://taxi-kitchen-api.vercel.app/api/v1/foods/random`;
 
   // jkhane btn a click korbe sei btn ar active class remove kore dite hobe
-  const catBtn =document.querySelectorAll(".btn-category")
+  const catBtn = document.querySelectorAll(".btn-category")
   catBtn.forEach(btn => btn?.classList?.remove("active"))
 
   //  jkhane click korbe sekhane active class add korte hobe 
@@ -54,13 +57,13 @@ const dispalyFoods = (foods) => {
     const foodCard = document.createElement("div")
     foodCard.innerHTML = `
       <div class="my-3">
-        <div onclick="showModalLoad(${food.id})" class="p-5 bg-white flex gap-3 shadow-lg rounded-xl">
+        <div class="p-5 bg-white flex gap-3 shadow-lg rounded-xl">
           <div class="img flex-1">
-            <img src="${food.foodImg}" alt=""
-              class="w-[160px] rounded-xl h-[160px] object-cover" />
+            <img src="${food.foodImg}" alt="" onclick="showModalLoad(${food.id})"
+              class="w-[160px] rounded-xl h-[160px] object-cover food-img" />
           </div>
           <div class="flex-2">
-            <h1 class="text-xl font-bold">
+            <h1 class="text-xl font-bold food-title">
               ${food.title}
             </h1>
 
@@ -68,11 +71,11 @@ const dispalyFoods = (foods) => {
 
             <div class="divider divider-end">
               <h2 class="text-yellow-600 font-semibold">
-                $ <span class="price">${food.price}</span>
+                $ <span class="price food-price">${food.price}</span>
               </h2>
             </div>
 
-            <button class="btn btn-warning">
+            <button onclick="addToCard(this)" class="btn btn-warning">
               <i class="fa-solid fa-square-plus"></i>
               Add This Item
             </button>
@@ -83,8 +86,8 @@ const dispalyFoods = (foods) => {
     foodsContainer.append(foodCard)
   })
   // food container k show korbo     and    loading container k hide korbo     
- document.getElementById("food-container").classList.remove("hidden")
- document.getElementById("loading-spinner").classList.add("hidden")
+  document.getElementById("food-container").classList.remove("hidden")
+  document.getElementById("loading-spinner").classList.add("hidden")
 }
 /////////////////////////////////////////
 
@@ -132,4 +135,60 @@ loadCategories()
 // loadRandomData()
 loadFrod(10)
 
+//items container section right section 
+// document.getElementById("food-container").addEventListener("click",(e) => {
+//   console.log(e.target);
+// })
 
+const addToCard = (btn) => {
+  const card = btn.parentNode.parentNode;
+  const foodTitle = card.querySelector(".food-title").innerText;
+  const foodImg = card.querySelector(".food-img").src;
+  const foodPrice = card.querySelector(".food-price").innerText;
+  const foodPriceNum = Number(foodPrice)
+  console.log(foodTitle,foodImg,foodPriceNum)
+
+  const selectdetItems = {
+    foodTitle: foodTitle,
+    foodimg: foodImg,
+    foodPrice: foodPriceNum,
+  };
+  cartData.push(selectdetItems)
+  dispalyCart(cartData)
+}
+
+const dispalyCart = (cart) =>{
+  const cartContainer = document.getElementById("cart-container");
+  cartContainer.innerHTML =""
+
+  for(let item of cart){
+    const newItem = document.createElement("div");
+    newItem.innerHTML =` 
+    <div class="p-1 bg-white flex gap-3 shadow rounded-xl relative">
+          <div class="img">
+            <img src="${item.foodimg}" alt=""
+              class="w-[50px] rounded-xl h-[50px] object-cover" />
+          </div>
+          <div class="flex-1">
+            <h1 class="text-xs font-bold">
+              ${item.foodTitle}
+            </h1>
+
+            <div class="">
+              <h2 class="text-yellow-600 font-semibold">
+                $ <span class="price">${item.foodPrice}</span> BDT
+              </h2>
+            </div>
+          </div>
+          <div
+            class="w-6 h-6 flex justify-center items-center bg-red-600 rounded-full absolute -top-1 -right-1 text-white cursor-pointer">
+            <i class="fa-solid fa-xmark"></i>
+          </div>
+        </div>
+    
+    `;
+
+    cartContainer.append(newItem)
+
+  }
+}
