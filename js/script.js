@@ -26,16 +26,20 @@ const dispalyCatagorie = (categories) => {
 ////////////////////////////////////////////////////////////////////
 
 const loadFrod = (id) => {
+ //food container k hide kora loading k show korbo 
+ document.getElementById("food-container").classList.add("hidden")
+ document.getElementById("loading-spinner").classList.remove("hidden")
+
+
   const uri = id ? `https://taxi-kitchen-api.vercel.app/api/v1/categories/${id}` : `https://taxi-kitchen-api.vercel.app/api/v1/foods/random`;
 
   // jkhane btn a click korbe sei btn ar active class remove kore dite hobe
   const catBtn =document.querySelectorAll(".btn-category")
-  catBtn.forEach(btn => btn.classList.remove("active"))
+  catBtn.forEach(btn => btn?.classList?.remove("active"))
 
   //  jkhane click korbe sekhane active class add korte hobe 
   const carrentBtn = document.getElementById(`cat-btn-${id}`);
-  // console.log(carrentBtn)
-  carrentBtn.classList.add("active")
+  carrentBtn?.classList?.add("active")
 
   fetch(uri)
     .then(res => res.json())
@@ -78,7 +82,9 @@ const dispalyFoods = (foods) => {
         `
     foodsContainer.append(foodCard)
   })
-
+  // food container k show korbo     and    loading container k hide korbo     
+ document.getElementById("food-container").classList.remove("hidden")
+ document.getElementById("loading-spinner").classList.add("hidden")
 }
 /////////////////////////////////////////
 
@@ -120,10 +126,6 @@ const loadRandomData = () => {
     .then(res => res.json())
     .then(data => dispalyFoods(data.foods))
 }
-
-
-
-
 
 
 loadCategories()

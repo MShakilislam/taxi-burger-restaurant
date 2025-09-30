@@ -35,7 +35,8 @@
       /* center the image */
       background-attachment: fixed;
     }
-    .active{
+
+    .active {
       background-color: black;
       color: white;
     }
@@ -82,6 +83,10 @@
     <section class="md:col-span-7 p-3">
       <h1 class="text-xl font-bold text-center rounded-2xl">Our Foods</h1>
       <div class="divider"></div>
+
+      <div id="loading-spinner" class="min-h-[60vh] flex justify-center items-center bg-white hidden" >
+        <span class="loading loading-spinner loading-xl"></span>
+      </div>
 
       <div class="" id="food-container">
         <!-- sample card  -->
@@ -158,11 +163,11 @@
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
       </form>
       <div id="detail-Container">
-        
+
       </div>
     </div>
   </dialog>
-        
+
 
 
   <script src="./js/script.js"></script>
