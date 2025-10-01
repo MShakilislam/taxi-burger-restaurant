@@ -60,7 +60,7 @@ const dispalyFoods = (foods) => {
         <div class="p-5 bg-white flex gap-3 shadow-lg rounded-xl">
           <div class="img flex-1">
             <img src="${food.foodImg}" alt="" onclick="showModalLoad(${food.id})"
-              class="w-[160px] rounded-xl h-[160px] object-cover food-img" />
+              class="w-[160px] rounded-xl h-[160px] object-cover food-img cursor-pointer" />
           </div>
           <div class="flex-2">
             <h1 class="text-xl font-bold food-title">
