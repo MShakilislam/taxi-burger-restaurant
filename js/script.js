@@ -5,8 +5,8 @@ const loadCategories = () => {
     .then(data => dispalyCatagorie(data.categories))
 }
 
-const cartData = [];
-const total = 0;
+let cartData = [];
+let total = 0;
 
 const dispalyCatagorie = (categories) => {
   // console.log(categories)
@@ -140,13 +140,14 @@ loadFrod(10)
 //   console.log(e.target);
 // })
 
+// ekhane carda ar btn a click korle akta kore card right side a joma hoy thakbe
 const addToCard = (btn) => {
   const card = btn.parentNode.parentNode;
   const foodTitle = card.querySelector(".food-title").innerText;
   const foodImg = card.querySelector(".food-img").src;
   const foodPrice = card.querySelector(".food-price").innerText;
   const foodPriceNum = Number(foodPrice)
-  console.log(foodTitle,foodImg,foodPriceNum)
+  // console.log(foodTitle, foodImg, foodPriceNum)
 
   const selectdetItems = {
     foodTitle: foodTitle,
@@ -154,33 +155,38 @@ const addToCard = (btn) => {
     foodPrice: foodPriceNum,
   };
   cartData.push(selectdetItems)
+  total = total + foodPriceNum;
   dispalyCart(cartData)
+  displayTotal(total)
+}
+const displayTotal = (val) => {
+  document.getElementById("cart-total").innerHTML = val
 }
 
-const dispalyCart = (cart) =>{
+const dispalyCart = (cart) => {
   const cartContainer = document.getElementById("cart-container");
-  cartContainer.innerHTML =""
+  cartContainer.innerHTML = ""
 
-  for(let item of cart){
+  for (let item of cart) {
     const newItem = document.createElement("div");
-    newItem.innerHTML =` 
+    newItem.innerHTML = ` 
     <div class="p-1 bg-white flex gap-3 shadow rounded-xl relative">
           <div class="img">
             <img src="${item.foodimg}" alt=""
               class="w-[50px] rounded-xl h-[50px] object-cover" />
           </div>
           <div class="flex-1">
-            <h1 class="text-xs font-bold">
+            <h1 class="text-xs font-bold food-title">
               ${item.foodTitle}
             </h1>
 
             <div class="">
               <h2 class="text-yellow-600 font-semibold">
-                $ <span class="price">${item.foodPrice}</span> BDT
+                $ <span class="item-price">${item.foodPrice}</span> BDT
               </h2>
             </div>
           </div>
-          <div
+          <div onclick="removeCard(this)"
             class="w-6 h-6 flex justify-center items-center bg-red-600 rounded-full absolute -top-1 -right-1 text-white cursor-pointer">
             <i class="fa-solid fa-xmark"></i>
           </div>
@@ -191,4 +197,16 @@ const dispalyCart = (cart) =>{
     cartContainer.append(newItem)
 
   }
+}
+
+const removeCard = (btn) => {
+  const items = btn.parentNode;
+  const foodTitle = items.querySelector(".food-title").innerText;
+  const foodprice = Number(items.querySelector(".item-price").innerText);
+  console.log(foodTitle)
+  cartData = cartData.filter((items) => items.foodTitle != foodTitle)
+  total = 0;
+  cartData.forEach((items) => (total += items.foodprice))
+  dispalyCart(cartData);
+  displayTotal(total)
 }
