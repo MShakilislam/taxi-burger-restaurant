@@ -150,6 +150,7 @@ const addToCard = (btn) => {
   // console.log(foodTitle, foodImg, foodPriceNum)
 
   const selectdetItems = {
+    id:cartData.length + 1,
     foodTitle: foodTitle,
     foodimg: foodImg,
     foodPrice: foodPriceNum,
@@ -171,6 +172,8 @@ const dispalyCart = (cart) => {
     const newItem = document.createElement("div");
     newItem.innerHTML = ` 
     <div class="p-1 bg-white flex gap-3 shadow rounded-xl relative">
+
+          <span class="card-id hidden">${item.id}</span>
           <div class="img">
             <img src="${item.foodimg}" alt=""
               class="w-[50px] rounded-xl h-[50px] object-cover" />
@@ -201,12 +204,13 @@ const dispalyCart = (cart) => {
 
 const removeCard = (btn) => {
   const items = btn.parentNode;
-  const foodTitle = items.querySelector(".food-title").innerText;
+  // const foodTitle = items.querySelector(".food-title").innerText;
+  const id = Number(items.querySelector(".card-id").innerText);
   const foodprice = Number(items.querySelector(".item-price").innerText);
-  console.log(foodTitle)
-  cartData = cartData.filter((items) => items.foodTitle != foodTitle)
+  // console.log(foodTitle)
+  cartData = cartData.filter((items) => items.id != id)
   total = 0;
-  cartData.forEach((items) => (total += items.foodprice))
+  cartData.forEach((items) => (total += items.foodPrice))
   dispalyCart(cartData);
   displayTotal(total)
 }
